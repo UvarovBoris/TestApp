@@ -1,8 +1,10 @@
 package com.uvarov.testapp.ui.home
 
+import com.uvarov.testapp.data.model.Cat
+
 data class HomeUiState(
-    val userName: String = "Guest",
-    val items: List<String> = emptyList()
+    val cats: List<Cat> = emptyList(),
+    val isLoading: Boolean = false
 ) {
     companion object {
         val Initial = HomeUiState()

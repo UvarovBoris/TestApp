@@ -2,8 +2,13 @@ package com.uvarov.testapp.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,14 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.uvarov.testapp.data.model.Cat
 import com.uvarov.testapp.ui.theme.TestAppTheme
 
 @Composable
 fun HomeRoute(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreen(
@@ -33,30 +39,64 @@ fun HomeScreen(
     state: HomeUiState,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Welcome, ${state.userName}!",
-            style = MaterialTheme.typography.headlineMedium
-        )
-        if (state.items.isEmpty()) {
-            Text(
-                text = "No items yet",
-                style = MaterialTheme.typography.bodyLarge
-            )
-        } else {
-            state.items.forEach { item ->
+    when {
+        state.isLoading -> {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        state.cats.isEmpty() -> {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
-                    text = item,
+                    text = "No cats yet",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
         }
+
+        else -> {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(state.cats, key = { it.id }) { cat ->
+                    CatRow(cat = cat)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CatRow(
+    cat: Cat,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = cat.name,
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
@@ -66,8 +106,10 @@ fun HomeScreenPreview() {
     TestAppTheme {
         HomeScreen(
             state = HomeUiState(
-                userName = "Android",
-                items = listOf("Item 1", "Item 2")
+                cats = listOf(
+                    Cat(id = "1", name = "Whiskers", imageUrl = ""),
+                    Cat(id = "2", name = "Milo", imageUrl = "")
+                )
             )
         )
     }
