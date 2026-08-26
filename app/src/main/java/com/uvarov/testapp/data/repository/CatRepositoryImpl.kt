@@ -18,6 +18,10 @@ class CatRepositoryImpl @Inject constructor(
             return cached.map { it.toCat() }
         }
 
+        return refreshCats()
+    }
+
+    override suspend fun refreshCats(): List<Cat> {
         val remote = remoteDataSource.getCats()
         localDataSource.saveCats(remote.map { it.toEntity() })
         return remote
