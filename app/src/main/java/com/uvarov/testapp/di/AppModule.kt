@@ -1,7 +1,7 @@
 package com.uvarov.testapp.di
 
 import com.uvarov.testapp.data.repository.CatRepository
-import com.uvarov.testapp.data.repository.FakeCatRepository
+import com.uvarov.testapp.data.repository.CatRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,5 +14,5 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun bindCatRepository(repository: FakeCatRepository): CatRepository
+    abstract fun bindCatRepository(repository: CatRepositoryImpl): CatRepository
 }
