@@ -12,5 +12,7 @@ data class CatImageDto(
     @SerializedName("height")
     val height: Int,
     @SerializedName("created_at")
-    val createdAt: String?
+    val createdAt: String?,
+    @SerializedName("breeds")
+    val breeds: List<BreedDto>? = emptyList()
 )

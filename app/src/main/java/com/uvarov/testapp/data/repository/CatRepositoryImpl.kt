@@ -2,7 +2,6 @@ package com.uvarov.testapp.data.repository
 
 import com.uvarov.testapp.data.local.CatLocalDataSource
 import com.uvarov.testapp.data.mapper.toCat
-import com.uvarov.testapp.data.mapper.toEntity
 import com.uvarov.testapp.data.model.Cat
 import com.uvarov.testapp.data.remote.CatRemoteDataSource
 import javax.inject.Inject
@@ -23,7 +22,7 @@ class CatRepositoryImpl @Inject constructor(
 
     override suspend fun refreshCats(): List<Cat> {
         val remote = remoteDataSource.getCats()
-        localDataSource.saveCats(remote.map { it.toEntity() })
+        localDataSource.saveCats(remote)
         return remote
     }
 }

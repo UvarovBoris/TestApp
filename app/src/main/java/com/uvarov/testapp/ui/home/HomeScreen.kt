@@ -1,10 +1,13 @@
 package com.uvarov.testapp.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -25,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.uvarov.testapp.data.model.Breed
 import com.uvarov.testapp.data.model.Cat
 import com.uvarov.testapp.ui.theme.TestAppTheme
 
@@ -102,12 +106,26 @@ private fun CatImage(
     cat: Cat,
     modifier: Modifier = Modifier
 ) {
-    AsyncImage(
-        model = cat.imageUrl,
-        contentDescription = cat.name,
-        modifier = modifier.aspectRatio(1f),
-        contentScale = ContentScale.Crop
-    )
+    Box(modifier = modifier.aspectRatio(1f)) {
+        AsyncImage(
+            model = cat.imageUrl,
+            contentDescription = cat.name,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+        val breedNames = cat.breeds.joinToString(", ") { it.name }
+        if (breedNames.isNotEmpty()) {
+            Text(
+                text = breedNames,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f))
+                    .padding(4.dp),
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
@@ -117,7 +135,21 @@ fun HomeScreenPreview() {
         HomeScreen(
             state = HomeUiState(
                 cats = listOf(
-                    Cat(id = "aph", name = "Whiskers", imageUrl = "https://cdn2.thecatapi.com/images/aph.jpg"),
+                    Cat(
+                        id = "aph",
+                        name = "Whiskers",
+                        imageUrl = "https://cdn2.thecatapi.com/images/aph.jpg",
+                        breeds = listOf(
+                            Breed(
+                                id = "abys",
+                                name = "Abyssinian",
+                                temperament = null,
+                                origin = null,
+                                lifeSpan = null,
+                                description = null
+                            )
+                        )
+                    ),
                     Cat(id = "bmp", name = "Milo", imageUrl = "https://cdn2.thecatapi.com/images/bmp.jpg")
                 )
             ),
