@@ -2,6 +2,7 @@ package com.uvarov.testapp.data.remote
 
 import com.uvarov.testapp.data.remote.dto.CatImageDto
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface CatApiService {
@@ -10,6 +11,7 @@ interface CatApiService {
     suspend fun getCatImages(
         @Query("limit") limit: Int,
         @Query("has_breeds") hasBreeds: Boolean = true,
-        @Query("api_key") apiKey: String
+        @Query("order") order: String = "ASC",
+        @Header("x-api-key") apiKey: String
     ): List<CatImageDto>
 }

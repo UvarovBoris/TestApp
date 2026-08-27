@@ -6,9 +6,13 @@ import com.uvarov.testapp.data.model.Cat
 import javax.inject.Inject
 
 class CatRemoteDataSource @Inject constructor(
-    private val apiService: CatApiService
+    private val apiService: CatApiService,
 ) {
     suspend fun getCats(limit: Int = 10): List<Cat> =
-        apiService.getCatImages(limit = limit, hasBreeds = true, apiKey = BuildConfig.CAT_API_KEY)
-            .map { it.toCat() }
+        apiService.getCatImages(
+            limit = limit,
+            hasBreeds = true,
+            order = "ASC",
+            apiKey = BuildConfig.CAT_API_KEY
+        ).map { it.toCat() }
 }

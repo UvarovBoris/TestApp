@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.uvarov.testapp.ui.home.HomeRoute
+import com.uvarov.testapp.ui.navigation.AppNavHost
 import com.uvarov.testapp.ui.theme.TestAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TestAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeRoute(
+                    AppNavHost(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
