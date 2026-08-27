@@ -2,19 +2,27 @@ package com.uvarov.testapp.data.repository
 
 import com.uvarov.testapp.data.model.Breed
 import com.uvarov.testapp.data.model.Cat
-import javax.inject.Inject
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 
 class FakeCatRepository @Inject constructor() : CatRepository {
 
-    override suspend fun getCats(): List<Cat> {
-        delay(500)
-        return fakeCats()
-    }
+    private val _catsFlow = MutableStateFlow<List<Cat>>(emptyList())
 
-    override suspend fun refreshCats(): List<Cat> {
+    override fun getCats(): Flow<List<Cat>> = _catsFlow.asStateFlow()
+        .onStart {
+            if (_catsFlow.value.isEmpty()) {
+                refreshCats()
+            }
+        }
+
+    override suspend fun refreshCats() {
         delay(500)
-        return fakeCats()
+        _catsFlow.value = fakeCats()
     }
 
     private fun fakeCats(): List<Cat> = listOf(

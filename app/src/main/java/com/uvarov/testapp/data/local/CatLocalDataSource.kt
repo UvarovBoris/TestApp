@@ -4,13 +4,16 @@ import androidx.room.withTransaction
 import com.uvarov.testapp.data.mapper.toCrossRefs
 import com.uvarov.testapp.data.mapper.toEntity
 import com.uvarov.testapp.data.model.Cat
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CatLocalDataSource @Inject constructor(
     private val catDao: CatDao,
     private val database: CatDatabase
 ) {
-    suspend fun getCats(): List<CatWithBreeds> = catDao.getCatsWithBreeds()
+    fun getCats(): Flow<List<CatWithBreeds>> = catDao.getCatsWithBreeds()
+
+    suspend fun isEmpty(): Boolean = catDao.isEmpty()
 
     suspend fun saveCats(cats: List<Cat>) {
         database.withTransaction {

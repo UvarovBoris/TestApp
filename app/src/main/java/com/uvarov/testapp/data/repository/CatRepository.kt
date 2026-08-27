@@ -1,8 +1,9 @@
 package com.uvarov.testapp.data.repository
 
 import com.uvarov.testapp.data.model.Cat
+import kotlinx.coroutines.flow.Flow
 
 interface CatRepository {
-    suspend fun getCats(): List<Cat>
-    suspend fun refreshCats(): List<Cat>
+    fun getCats(): Flow<List<Cat>>
+    suspend fun refreshCats()
 }

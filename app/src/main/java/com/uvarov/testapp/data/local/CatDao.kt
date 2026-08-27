@@ -6,12 +6,17 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 
+import kotlinx.coroutines.flow.Flow
+
 @Dao
 interface CatDao {
 
     @Transaction
     @Query("SELECT * FROM cats")
-    suspend fun getCatsWithBreeds(): List<CatWithBreeds>
+    fun getCatsWithBreeds(): Flow<List<CatWithBreeds>>
+
+    @Query("SELECT (SELECT COUNT(*) FROM cats) == 0")
+    suspend fun isEmpty(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveBreeds(breeds: List<BreedEntity>)
