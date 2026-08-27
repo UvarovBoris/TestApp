@@ -9,7 +9,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.uvarov.testapp.data.model.Cat
 import com.uvarov.testapp.ui.catdetail.CatDetailScreen
 import com.uvarov.testapp.ui.cats.CatsRoute
-import com.uvarov.testapp.ui.home.HomeScreen
+import com.uvarov.testapp.ui.home.HomeRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -31,7 +31,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         entryProvider = { key ->
             when (key) {
                 is HomeDestination -> NavEntry(key) {
-                    HomeScreen(
+                    HomeRoute(
                         onOpenCats = { backStack.add(CatsDestination) },
                         modifier = modifier
                     )
