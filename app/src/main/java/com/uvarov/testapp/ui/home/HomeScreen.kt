@@ -1,4 +1,4 @@
-package com.uvarov.testapp.ui.dashboard
+package com.uvarov.testapp.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,13 +20,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.uvarov.testapp.ui.theme.TestAppTheme
 
 @Composable
-fun DashboardRoute(
+fun HomeRoute(
     onOpenCats: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    DashboardScreen(
+    HomeScreen(
         state = uiState,
         onIncrement = viewModel::incrementCounter,
         onOpenCats = onOpenCats,
@@ -35,8 +35,8 @@ fun DashboardRoute(
 }
 
 @Composable
-fun DashboardScreen(
-    state: DashboardUiState,
+fun HomeScreen(
+    state: HomeUiState,
     onIncrement: () -> Unit,
     onOpenCats: () -> Unit,
     modifier: Modifier = Modifier,
@@ -65,10 +65,10 @@ fun DashboardScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DashboardScreenPreview() {
+fun HomeScreenPreview() {
     TestAppTheme {
-        DashboardScreen(
-            state = DashboardUiState(counter = 5),
+        HomeScreen(
+            state = HomeUiState(counter = 5),
             onIncrement = {},
             onOpenCats = {}
         )

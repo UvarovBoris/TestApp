@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.uvarov.testapp.ui.dashboard.DashboardRoute
 import com.uvarov.testapp.ui.favorites.FavoritesRoute
+import com.uvarov.testapp.ui.home.HomeRoute
 import com.uvarov.testapp.ui.profile.ProfileRoute
 import com.uvarov.testapp.ui.theme.TestAppTheme
 
@@ -71,7 +71,7 @@ fun MainScreen(
         ) {
             saveableStateHolder.SaveableStateProvider(key = state.selectedTab) {
                 when (state.selectedTab) {
-                    MainTab.HOME -> DashboardRoute(onOpenCats = onOpenCats)
+                    MainTab.HOME -> HomeRoute(onOpenCats = onOpenCats)
                     MainTab.FAVORITES -> FavoritesRoute()
                     MainTab.PROFILE -> ProfileRoute()
                 }
