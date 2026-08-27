@@ -9,6 +9,7 @@ interface CatApiService {
     @GET("v1/images/search")
     suspend fun getCatImages(
         @Query("limit") limit: Int,
+        @Query("has_breeds") hasBreeds: Boolean = true,
         @Query("api_key") apiKey: String
     ): List<CatImageDto>
 }

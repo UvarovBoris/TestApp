@@ -9,6 +9,6 @@ class CatRemoteDataSource @Inject constructor(
     private val apiService: CatApiService
 ) {
     suspend fun getCats(limit: Int = 10): List<Cat> =
-        apiService.getCatImages(limit = limit, apiKey = BuildConfig.CAT_API_KEY)
+        apiService.getCatImages(limit = limit, hasBreeds = true, apiKey = BuildConfig.CAT_API_KEY)
             .map { it.toCat() }
 }
