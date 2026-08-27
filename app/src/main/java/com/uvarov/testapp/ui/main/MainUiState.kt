@@ -1,4 +1,4 @@
-package com.uvarov.testapp.ui.home
+package com.uvarov.testapp.ui.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -6,7 +6,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
-enum class HomeTab(
+enum class MainTab(
     val title: String,
     val icon: ImageVector
 ) {
@@ -15,7 +15,6 @@ enum class HomeTab(
     PROFILE("Profile", Icons.Default.Person)
 }
 
-data class HomeUiState(
-    val selectedTab: HomeTab = HomeTab.HOME
+data class MainUiState(
+    val selectedTab: MainTab = MainTab.HOME
 )
-

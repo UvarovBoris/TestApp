@@ -9,11 +9,11 @@ import androidx.navigation3.ui.NavDisplay
 import com.uvarov.testapp.data.model.Cat
 import com.uvarov.testapp.ui.catdetail.CatDetailScreen
 import com.uvarov.testapp.ui.cats.CatsRoute
-import com.uvarov.testapp.ui.home.HomeRoute
+import com.uvarov.testapp.ui.main.MainRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object HomeDestination : NavKey
+data object MainDestination : NavKey
 
 @Serializable
 data object CatsDestination : NavKey
@@ -23,15 +23,15 @@ data class CatDetailDestination(val cat: Cat) : NavKey
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
-    val backStack = rememberNavBackStack(HomeDestination)
+    val backStack = rememberNavBackStack(MainDestination)
 
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
         entryProvider = { key ->
             when (key) {
-                is HomeDestination -> NavEntry(key) {
-                    HomeRoute(
+                is MainDestination -> NavEntry(key) {
+                    MainRoute(
                         onOpenCats = { backStack.add(CatsDestination) },
                         modifier = modifier
                     )

@@ -1,4 +1,4 @@
-package com.uvarov.testapp.ui.home
+package com.uvarov.testapp.ui.main
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,12 +9,11 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+class MainViewModel @Inject constructor() : ViewModel() {
+    private val _uiState = MutableStateFlow(MainUiState())
+    val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
-    fun onTabSelected(tab: HomeTab) {
+    fun onTabSelected(tab: MainTab) {
         _uiState.update { it.copy(selectedTab = tab) }
     }
 }
-
