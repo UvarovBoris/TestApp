@@ -1,6 +1,7 @@
 package com.uvarov.testapp.ui.cats
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import com.uvarov.testapp.ui.theme.TestAppTheme
 
 @Composable
 fun CatsRoute(
+    onCatClick: (Cat) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CatsViewModel = hiltViewModel()
 ) {
@@ -39,6 +41,7 @@ fun CatsRoute(
     CatsScreen(
         state = uiState,
         onRefresh = viewModel::refreshCats,
+        onCatClick = onCatClick,
         modifier = modifier
     )
 }
@@ -47,6 +50,7 @@ fun CatsRoute(
 fun CatsScreen(
     state: CatsUiState,
     onRefresh: () -> Unit,
+    onCatClick: (Cat) -> Unit,
     modifier: Modifier = Modifier
 ) {
     PullToRefreshBox(
@@ -91,7 +95,10 @@ fun CatsScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     items(state.cats, key = { it.id }) { cat ->
-                        CatImage(cat = cat)
+                        CatImage(
+                            cat = cat,
+                            onClick = { onCatClick(cat) }
+                        )
                     }
                 }
             }
@@ -102,9 +109,13 @@ fun CatsScreen(
 @Composable
 private fun CatImage(
     cat: Cat,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier.aspectRatio(1f)) {
+    Box(modifier = modifier
+        .aspectRatio(1f)
+        .clickable(onClick = onClick)
+    ) {
         AsyncImage(
             model = cat.imageUrl,
             contentDescription = cat.name,
@@ -151,7 +162,8 @@ fun CatsScreenPreview() {
                     Cat(id = "bmp", name = "Milo", imageUrl = "https://cdn2.thecatapi.com/images/bmp.jpg")
                 )
             ),
-            onRefresh = {}
+            onRefresh = {},
+            onCatClick = {}
         )
     }
 }
