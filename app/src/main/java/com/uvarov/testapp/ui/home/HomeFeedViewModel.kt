@@ -9,12 +9,11 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+class HomeFeedViewModel @Inject constructor() : ViewModel() {
+    private val _uiState = MutableStateFlow(HomeFeedUiState())
+    val uiState: StateFlow<HomeFeedUiState> = _uiState.asStateFlow()
 
-    fun onTabSelected(tab: HomeTab) {
-        _uiState.update { it.copy(selectedTab = tab) }
+    fun incrementCounter() {
+        _uiState.update { it.copy(counter = it.counter + 1) }
     }
 }
-

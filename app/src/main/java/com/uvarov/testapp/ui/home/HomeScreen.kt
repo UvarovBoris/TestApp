@@ -16,21 +16,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.uvarov.testapp.ui.favorites.FavoritesScreen
-import com.uvarov.testapp.ui.profile.ProfileScreen
+import com.uvarov.testapp.ui.favorites.FavoritesRoute
+import com.uvarov.testapp.ui.profile.ProfileRoute
 import com.uvarov.testapp.ui.theme.TestAppTheme
 
 @Composable
 fun HomeRoute(
     onOpenCats: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreen(
@@ -46,8 +47,10 @@ fun HomeScreen(
     state: HomeUiState,
     onTabSelected: (HomeTab) -> Unit,
     onOpenCats: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
+    val saveableStateHolder = rememberSaveableStateHolder()
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
@@ -73,19 +76,38 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            when (state.selectedTab) {
-                HomeTab.HOME -> HomeTabContent(onOpenCats = onOpenCats)
-                HomeTab.FAVORITES -> FavoritesScreen()
-                HomeTab.PROFILE -> ProfileScreen()
+            saveableStateHolder.SaveableStateProvider(key = state.selectedTab) {
+                when (state.selectedTab) {
+                    HomeTab.HOME -> HomeFeedRoute(onOpenCats = onOpenCats)
+                    HomeTab.FAVORITES -> FavoritesRoute()
+                    HomeTab.PROFILE -> ProfileRoute()
+                }
             }
         }
     }
 }
 
 @Composable
-private fun HomeTabContent(
+fun HomeFeedRoute(
     onOpenCats: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeFeedViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    HomeFeedScreen(
+        state = uiState,
+        onIncrement = viewModel::incrementCounter,
+        onOpenCats = onOpenCats,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun HomeFeedScreen(
+    state: HomeFeedUiState,
+    onIncrement: () -> Unit,
+    onOpenCats: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
@@ -102,6 +124,10 @@ private fun HomeTabContent(
         Button(onClick = onOpenCats) {
             Text("Open cats")
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onIncrement) {
+            Text("Clicks on this tab: ${state.counter}")
+        }
     }
 }
 
@@ -116,4 +142,5 @@ fun HomeScreenPreview() {
         )
     }
 }
+
 
