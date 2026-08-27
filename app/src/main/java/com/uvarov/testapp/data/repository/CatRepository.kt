@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface CatRepository {
     fun getCats(): Flow<List<Cat>>
     suspend fun refreshCats()
+    suspend fun loadNextPage(): Boolean
 }

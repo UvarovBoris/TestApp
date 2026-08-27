@@ -9,7 +9,8 @@ interface CatApiService {
 
     @GET("v1/images/search")
     suspend fun getCatImages(
-        @Query("limit") limit: Int,
+        @Query("page") page: Int = 0,
+        @Query("limit") limit: Int = 25,
         @Query("has_breeds") hasBreeds: Boolean = true,
         @Query("order") order: String = "ASC",
         @Header("x-api-key") apiKey: String

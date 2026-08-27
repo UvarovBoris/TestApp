@@ -20,8 +20,7 @@ import androidx.room.Index
             childColumns = ["breedId"],
             onDelete = ForeignKey.CASCADE
         )
-    ],
-    indices = [Index(value = ["breedId"])]
+    ]
 )
 data class CatBreedCrossRef(
     val catId: String,

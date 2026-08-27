@@ -12,6 +12,7 @@ import javax.inject.Inject
 class FakeCatRepository @Inject constructor() : CatRepository {
 
     private val _catsFlow = MutableStateFlow<List<Cat>>(emptyList())
+    private var page = 0
 
     override fun getCats(): Flow<List<Cat>> = _catsFlow.asStateFlow()
         .onStart {
@@ -22,16 +23,22 @@ class FakeCatRepository @Inject constructor() : CatRepository {
 
     override suspend fun refreshCats() {
         delay(500)
-        _catsFlow.value = fakeCats()
+        page = 0
+        _catsFlow.value = fakeCats(0)
     }
 
-    private fun fakeCats(): List<Cat> = listOf(
-        Cat(id = "1", name = "Whiskers", imageUrl = "", breeds = fakeBreeds()),
-        Cat(id = "2", name = "Milo", imageUrl = "", breeds = fakeBreeds()),
-        Cat(id = "3", name = "Luna", imageUrl = "", breeds = fakeBreeds()),
-        Cat(id = "4", name = "Oliver", imageUrl = "", breeds = fakeBreeds()),
-        Cat(id = "5", name = "Bella", imageUrl = "", breeds = fakeBreeds())
-    )
+    override suspend fun loadNextPage(): Boolean {
+        delay(500)
+        page++
+        val nextCats = fakeCats(page)
+        _catsFlow.value = _catsFlow.value + nextCats
+        return page < 3
+    }
+
+    private fun fakeCats(p: Int): List<Cat> = (1..5).map { index ->
+        val id = "${p}_$index"
+        Cat(id = id, name = "Cat $id", imageUrl = "", breeds = fakeBreeds())
+    }
 
     private fun fakeBreeds(): List<Breed> = listOf(
         Breed(

@@ -20,9 +20,19 @@ class CatLocalDataSource @Inject constructor(
             catDao.clearCatBreedCrossRefs()
             catDao.clearCats()
             catDao.clearBreeds()
-            catDao.saveBreeds(cats.flatMap { cat -> cat.breeds.map { it.toEntity() } })
-            catDao.saveCats(cats.map { it.toEntity() })
-            catDao.saveCatBreedCrossRefs(cats.flatMap { it.toCrossRefs() })
+            insertCatsInternal(cats)
         }
+    }
+
+    suspend fun appendCats(cats: List<Cat>) {
+        database.withTransaction {
+            insertCatsInternal(cats)
+        }
+    }
+
+    private suspend fun insertCatsInternal(cats: List<Cat>) {
+        catDao.saveBreeds(cats.flatMap { cat -> cat.breeds.map { it.toEntity() } })
+        catDao.saveCats(cats.map { it.toEntity() })
+        catDao.saveCatBreedCrossRefs(cats.flatMap { it.toCrossRefs() })
     }
 }

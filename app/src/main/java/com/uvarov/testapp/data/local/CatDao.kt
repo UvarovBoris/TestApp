@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 
 import kotlinx.coroutines.flow.Flow
 
@@ -18,13 +19,13 @@ interface CatDao {
     @Query("SELECT (SELECT COUNT(*) FROM cats) == 0")
     suspend fun isEmpty(): Boolean
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun saveBreeds(breeds: List<BreedEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun saveCats(cats: List<CatEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun saveCatBreedCrossRefs(crossRefs: List<CatBreedCrossRef>)
 
     @Query("DELETE FROM cat_breed_cross_ref")

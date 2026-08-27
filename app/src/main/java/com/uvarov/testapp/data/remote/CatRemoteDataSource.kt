@@ -8,8 +8,9 @@ import javax.inject.Inject
 class CatRemoteDataSource @Inject constructor(
     private val apiService: CatApiService,
 ) {
-    suspend fun getCats(limit: Int = 25): List<Cat> =
+    suspend fun getCats(page: Int = 0, limit: Int = 25): List<Cat> =
         apiService.getCatImages(
+            page = page,
             limit = limit,
             hasBreeds = true,
             order = "ASC",
