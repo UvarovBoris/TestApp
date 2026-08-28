@@ -46,7 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.SubcomposeAsyncImage
 import com.uvarov.testapp.data.model.Breed
 import com.uvarov.testapp.data.model.Cat
-import com.uvarov.testapp.ui.theme.TestAppTheme
+import com.uvarov.testapp.core.ui.theme.TestAppTheme
 
 @Composable
 fun CatsRoute(

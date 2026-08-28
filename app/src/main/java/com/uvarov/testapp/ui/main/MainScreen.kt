@@ -18,7 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.uvarov.testapp.ui.favorites.FavoritesRoute
 import com.uvarov.testapp.ui.home.HomeRoute
 import com.uvarov.testapp.ui.profile.ProfileRoute
-import com.uvarov.testapp.ui.theme.TestAppTheme
+import com.uvarov.testapp.core.ui.theme.TestAppTheme
 
 @Composable
 fun MainRoute(

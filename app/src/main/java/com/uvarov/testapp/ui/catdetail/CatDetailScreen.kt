@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import com.uvarov.testapp.data.model.Breed
 import com.uvarov.testapp.data.model.Cat
-import com.uvarov.testapp.ui.theme.TestAppTheme
+import com.uvarov.testapp.core.ui.theme.TestAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -126,7 +126,8 @@ private fun BreedDetailsCard(
             )
             DetailRow(label = "Origin", value = breed.origin)
             DetailRow(label = "Life span", value = breed.lifeSpan)
-            if (!breed.temperament.isNullOrBlank()) {
+            val temperament = breed.temperament
+            if (!temperament.isNullOrBlank()) {
                 Text(
                     text = "Temperament",
                     style = MaterialTheme.typography.labelMedium,
@@ -136,7 +137,7 @@ private fun BreedDetailsCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    breed.temperament.split(", ").forEach { trait ->
+                    temperament.split(", ").forEach { trait ->
                         SuggestionChip(
                             onClick = {},
                             label = { Text(trait) }

@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.uvarov.testapp.ui.theme.TestAppTheme
+import com.uvarov.testapp.core.ui.theme.TestAppTheme
 
 @Composable
 fun ProfileRoute(

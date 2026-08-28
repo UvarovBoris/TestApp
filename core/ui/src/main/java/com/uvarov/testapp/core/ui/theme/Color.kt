@@ -1,4 +1,4 @@
-package com.uvarov.testapp.ui.theme
+package com.uvarov.testapp.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
