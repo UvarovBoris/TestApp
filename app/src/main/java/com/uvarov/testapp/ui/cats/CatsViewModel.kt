@@ -33,15 +33,14 @@ class CatsViewModel @Inject constructor(
     ) { cats, isRefreshing, isLoadingMore, canLoadMore ->
         CatsUiState(
             cats = cats,
-            isLoading = cats.isEmpty() && (isLoadingMore || isRefreshing),
             isRefreshing = isRefreshing,
-            isLoadingMore = isLoadingMore && cats.isNotEmpty(),
+            isLoadingMore = isLoadingMore,
             canLoadMore = canLoadMore
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = CatsUiState(isLoading = true)
+        initialValue = CatsUiState()
     )
 
     fun refreshCats() {

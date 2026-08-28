@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -44,7 +43,7 @@ import com.uvarov.testapp.ui.theme.TestAppTheme
 fun CatsRoute(
     onCatClick: (Cat) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CatsViewModel = hiltViewModel()
+    viewModel: CatsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     CatsScreen(
@@ -62,7 +61,7 @@ fun CatsScreen(
     onRefresh: () -> Unit,
     onLoadNextPage: () -> Unit,
     onCatClick: (Cat) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val gridState = rememberLazyGridState()
 
@@ -89,69 +88,35 @@ fun CatsScreen(
             onRefresh = onRefresh,
             modifier = Modifier.fillMaxSize()
         ) {
-            when {
-                state.isLoading -> {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                    }
+            val layoutDirection = LocalLayoutDirection.current
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                state = gridState,
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(
+                    start = innerPadding.calculateStartPadding(layoutDirection) + 4.dp,
+                    top = innerPadding.calculateTopPadding() + 4.dp,
+                    end = innerPadding.calculateEndPadding(layoutDirection) + 4.dp,
+                    bottom = innerPadding.calculateBottomPadding() + 4.dp
+                ),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                items(state.cats, key = { it.id }) { cat ->
+                    CatImage(
+                        cat = cat,
+                        onClick = { onCatClick(cat) }
+                    )
                 }
-
-                state.cats.isEmpty() -> {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "No cats yet",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
-                }
-
-                else -> {
-                    val layoutDirection = LocalLayoutDirection.current
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(3),
-                        state = gridState,
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(
-                            start = innerPadding.calculateStartPadding(layoutDirection) + 4.dp,
-                            top = innerPadding.calculateTopPadding() + 4.dp,
-                            end = innerPadding.calculateEndPadding(layoutDirection) + 4.dp,
-                            bottom = innerPadding.calculateBottomPadding() + 4.dp
-                        ),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        items(state.cats, key = { it.id }) { cat ->
-                            CatImage(
-                                cat = cat,
-                                onClick = { onCatClick(cat) }
-                            )
-                        }
-
-                        if (state.isLoadingMore) {
-                            item(span = { GridItemSpan(maxLineSpan) }) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator()
-                                }
-                            }
+                if (state.isLoadingMore) {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
                         }
                     }
                 }
@@ -164,11 +129,12 @@ fun CatsScreen(
 private fun CatImage(
     cat: Cat,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier
-        .aspectRatio(1f)
-        .clickable(onClick = onClick)
+    Box(
+        modifier = modifier
+            .aspectRatio(1f)
+            .clickable(onClick = onClick)
     ) {
         AsyncImage(
             model = cat.imageUrl,
@@ -176,18 +142,15 @@ private fun CatImage(
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        val breedNames = cat.breeds.joinToString(", ") { it.name }
-        if (breedNames.isNotEmpty()) {
-            Text(
-                text = breedNames,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f))
-                    .padding(4.dp),
-                style = MaterialTheme.typography.labelSmall
-            )
-        }
+        Text(
+            text = cat.id,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f))
+                .padding(4.dp),
+            style = MaterialTheme.typography.labelSmall
+        )
     }
 }
 
@@ -223,4 +186,7 @@ fun CatsScreenPreview() {
     }
 }
 
-private data class LoadMoreSignal(val shouldLoad: Boolean, val totalItems: Int)
+private data class LoadMoreSignal(
+    val shouldLoad: Boolean,
+    val totalItems: Int,
+)
