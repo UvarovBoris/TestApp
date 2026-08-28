@@ -66,16 +66,19 @@ fun CatsScreen(
 ) {
     val gridState = rememberLazyGridState()
 
-    val shouldLoadMore by remember {
+    val loadMoreSignal by remember {
         derivedStateOf {
             val totalItems = gridState.layoutInfo.totalItemsCount
             val lastVisibleItemIndex = gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            totalItems > 0 && lastVisibleItemIndex >= totalItems - 6
+            LoadMoreSignal(
+                shouldLoad = totalItems == 0 || lastVisibleItemIndex >= totalItems - 6,
+                totalItems = totalItems
+            )
         }
     }
 
-    LaunchedEffect(shouldLoadMore) {
-        if (shouldLoadMore && state.canLoadMore && !state.isLoadingMore && !state.isRefreshing && !state.isLoading) {
+    LaunchedEffect(loadMoreSignal) {
+        if (loadMoreSignal.shouldLoad && state.canLoadMore && !state.isLoadingMore && !state.isRefreshing) {
             onLoadNextPage()
         }
     }
@@ -219,3 +222,5 @@ fun CatsScreenPreview() {
         )
     }
 }
+
+private data class LoadMoreSignal(val shouldLoad: Boolean, val totalItems: Int)

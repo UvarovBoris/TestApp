@@ -33,9 +33,9 @@ class CatsViewModel @Inject constructor(
     ) { cats, isRefreshing, isLoadingMore, canLoadMore ->
         CatsUiState(
             cats = cats,
-            isLoading = cats.isEmpty() && !isRefreshing,
+            isLoading = cats.isEmpty() && (isLoadingMore || isRefreshing),
             isRefreshing = isRefreshing,
-            isLoadingMore = isLoadingMore,
+            isLoadingMore = isLoadingMore && cats.isNotEmpty(),
             canLoadMore = canLoadMore
         )
     }.stateIn(
@@ -57,7 +57,7 @@ class CatsViewModel @Inject constructor(
     }
 
     fun loadNextPage() {
-        if (_isLoadingMore.value || !_canLoadMore.value || uiState.value.isLoading || _isRefreshing.value) {
+        if (_isLoadingMore.value || !_canLoadMore.value || _isRefreshing.value) {
             return
         }
 

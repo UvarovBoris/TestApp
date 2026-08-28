@@ -6,7 +6,6 @@ import com.uvarov.testapp.data.model.Cat
 import com.uvarov.testapp.data.remote.CatRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
@@ -17,23 +16,19 @@ class CatRepositoryImpl @Inject constructor(
 ) : CatRepository {
 
     private val mutex = Mutex()
-    private var currentPage = 0
+    private var currentPage = -1
     private val pageSize = 25
 
     override fun getCats(): Flow<List<Cat>> {
         return localDataSource.getCats()
             .map { list -> list.map { it.toCat() } }
-            .onStart {
-                if (localDataSource.isEmpty()) {
-                    runCatching { refreshCats() }
-                }
-            }
     }
 
     override suspend fun refreshCats() {
         mutex.withLock {
-            currentPage = 0
+            currentPage = -1
             val remote = remoteDataSource.getCats(page = 0, limit = pageSize)
+            currentPage = 0
             localDataSource.saveCats(remote)
         }
     }
