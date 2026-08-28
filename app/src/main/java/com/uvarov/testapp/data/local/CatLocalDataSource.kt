@@ -15,6 +15,8 @@ class CatLocalDataSource @Inject constructor(
 
     suspend fun isEmpty(): Boolean = catDao.isEmpty()
 
+    suspend fun getCount(): Int = catDao.getCount()
+
     suspend fun saveCats(cats: List<Cat>) {
         database.withTransaction {
             catDao.clearCatBreedCrossRefs()

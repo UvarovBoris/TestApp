@@ -16,7 +16,6 @@ class CatRepositoryImpl @Inject constructor(
 ) : CatRepository {
 
     private val mutex = Mutex()
-    private var currentPage = -1
     private val pageSize = 25
 
     override fun getCats(): Flow<List<Cat>> {
@@ -26,19 +25,17 @@ class CatRepositoryImpl @Inject constructor(
 
     override suspend fun refreshCats() {
         mutex.withLock {
-            currentPage = -1
-            val remote = remoteDataSource.getCats(page = 0, limit = pageSize)
-            currentPage = 0
-            localDataSource.saveCats(remote)
+            localDataSource.saveCats(emptyList())
         }
+        loadNextPage()
     }
 
     override suspend fun loadNextPage(): Boolean {
         return mutex.withLock {
-            val nextPage = currentPage + 1
+            val count = localDataSource.getCount()
+            val nextPage = count / pageSize
             val remote = remoteDataSource.getCats(page = nextPage, limit = pageSize)
             if (remote.isNotEmpty()) {
-                currentPage = nextPage
                 localDataSource.appendCats(remote)
             }
             remote.size >= pageSize

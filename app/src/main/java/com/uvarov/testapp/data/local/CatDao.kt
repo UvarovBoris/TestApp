@@ -19,6 +19,9 @@ interface CatDao {
     @Query("SELECT (SELECT COUNT(*) FROM cats) == 0")
     suspend fun isEmpty(): Boolean
 
+    @Query("SELECT COUNT(*) FROM cats")
+    suspend fun getCount(): Int
+
     @Upsert
     suspend fun saveBreeds(breeds: List<BreedEntity>)
 
