@@ -6,6 +6,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
@@ -20,6 +21,9 @@ class FakeCatRepository @Inject constructor() : CatRepository {
                 refreshCats()
             }
         }
+
+    override fun getCatById(catId: String): Flow<Cat?> =
+        _catsFlow.map { list -> list.firstOrNull { it.id == catId } }
 
     override suspend fun refreshCats() {
         delay(500)

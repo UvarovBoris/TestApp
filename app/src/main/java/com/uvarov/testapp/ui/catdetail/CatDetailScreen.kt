@@ -30,21 +30,37 @@ import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.SubcomposeAsyncImage
+import com.uvarov.testapp.core.ui.theme.TestAppTheme
 import com.uvarov.testapp.data.model.Breed
 import com.uvarov.testapp.data.model.Cat
-import com.uvarov.testapp.core.ui.theme.TestAppTheme
+
+@Composable
+fun CatDetailRoute(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: CatDetailViewModel
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    CatDetailScreen(
+        state = uiState,
+        onBack = onBack,
+        modifier = modifier
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatDetailScreen(
-    cat: Cat,
+    state: CatDetailUiState,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -52,7 +68,7 @@ fun CatDetailScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text(text = cat.name) },
+                title = { Text(text = state.cat?.name.orEmpty()) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -64,45 +80,72 @@ fun CatDetailScreen(
             )
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp)
-        ) {
-            val shape = RoundedCornerShape(12.dp)
-            SubcomposeAsyncImage(
-                model = cat.imageUrl,
-                contentDescription = cat.name,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(shape)
-                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape),
-                contentScale = ContentScale.Crop,
-                loading = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.surfaceVariant),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                },
-                error = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                    )
+        val cat = state.cat
+        when {
+            state.isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
-            )
+            }
 
-            cat.breeds.forEach { breed ->
-                Spacer(modifier = Modifier.height(16.dp))
-                BreedDetailsCard(breed = breed)
+            cat == null -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Cat not found")
+                }
+            }
+
+            else -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp)
+                ) {
+                    val shape = RoundedCornerShape(12.dp)
+                    SubcomposeAsyncImage(
+                        model = cat.imageUrl,
+                        contentDescription = cat.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .clip(shape)
+                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape),
+                        contentScale = ContentScale.Crop,
+                        loading = {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        },
+                        error = {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                            )
+                        }
+                    )
+
+                    cat.breeds.forEach { breed ->
+                        Spacer(modifier = Modifier.height(16.dp))
+                        BreedDetailsCard(breed = breed)
+                    }
+                }
             }
         }
     }
@@ -183,18 +226,20 @@ private fun DetailRow(
 fun CatDetailScreenPreview() {
     TestAppTheme {
         CatDetailScreen(
-            cat = Cat(
-                id = "aph",
-                name = "Whiskers",
-                imageUrl = "https://cdn2.thecatapi.com/images/aph.jpg",
-                breeds = listOf(
-                    Breed(
-                        id = "abys",
-                        name = "Abyssinian",
-                        temperament = "Active, Energetic, Independent",
-                        origin = "Egypt",
-                        lifeSpan = "14 - 15 years",
-                        description = "The Abyssinian is a lithe, finely boned cat with a striking ticked coat."
+            state = CatDetailUiState(
+                cat = Cat(
+                    id = "aph",
+                    name = "Whiskers",
+                    imageUrl = "https://cdn2.thecatapi.com/images/aph.jpg",
+                    breeds = listOf(
+                        Breed(
+                            id = "abys",
+                            name = "Abyssinian",
+                            temperament = "Active, Energetic, Independent",
+                            origin = "Egypt",
+                            lifeSpan = "14 - 15 years",
+                            description = "The Abyssinian is a lithe, finely boned cat with a striking ticked coat."
+                        )
                     )
                 )
             ),

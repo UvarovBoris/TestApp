@@ -23,6 +23,11 @@ class CatRepositoryImpl @Inject constructor(
             .map { list -> list.map { it.toCat() } }
     }
 
+    override fun getCatById(catId: String): Flow<Cat?> {
+        return localDataSource.getCats()
+            .map { list -> list.firstOrNull { it.cat.id == catId }?.toCat() }
+    }
+
     override suspend fun refreshCats() {
         mutex.withLock {
             localDataSource.saveCats(emptyList())

@@ -50,7 +50,7 @@ import com.uvarov.testapp.core.ui.theme.TestAppTheme
 
 @Composable
 fun CatsRoute(
-    onCatClick: (Cat) -> Unit,
+    onCatClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CatsViewModel = hiltViewModel(),
 ) {
@@ -69,7 +69,7 @@ fun CatsScreen(
     state: CatsUiState,
     onRefresh: () -> Unit,
     onLoadNextPage: () -> Unit,
-    onCatClick: (Cat) -> Unit,
+    onCatClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val gridState = rememberLazyGridState()
@@ -117,7 +117,7 @@ fun CatsScreen(
                 items(state.cats, key = { it.id }) { cat ->
                     CatImage(
                         cat = cat,
-                        onClick = { onCatClick(cat) }
+                        onClick = { onCatClick(cat.id) }
                     )
                 }
                 if (state.isLoadingMore) {
