@@ -6,19 +6,19 @@ import com.uvarov.testapp.domain.usecase.GetCatsUseCase
 import com.uvarov.testapp.domain.usecase.LoadNextPageCatsUseCase
 import com.uvarov.testapp.domain.usecase.RefreshCatsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class CatsViewModel @Inject constructor(
     getCats: GetCatsUseCase,
     private val refreshCatsUseCase: RefreshCatsUseCase,
-    private val loadNextPageCatsUseCase: LoadNextPageCatsUseCase
+    private val loadNextPageCatsUseCase: LoadNextPageCatsUseCase,
 ) : ViewModel() {
 
     private val _isRefreshing = MutableStateFlow(false)
@@ -35,12 +35,13 @@ class CatsViewModel @Inject constructor(
             cats = cats,
             isRefreshing = isRefreshing,
             isLoadingMore = isLoadingMore,
-            canLoadMore = canLoadMore
+            canLoadMore = canLoadMore,
+            isLoading = false
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = CatsUiState()
+        initialValue = CatsUiState(isLoading = true, canLoadMore = true)
     )
 
     fun refreshCats() {

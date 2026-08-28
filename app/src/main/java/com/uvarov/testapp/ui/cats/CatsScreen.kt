@@ -76,8 +76,8 @@ fun CatsScreen(
         }
     }
 
-    LaunchedEffect(loadMoreSignal) {
-        if (loadMoreSignal.shouldLoad && state.canLoadMore && !state.isLoadingMore && !state.isRefreshing) {
+    LaunchedEffect(state.isLoading, loadMoreSignal) {
+        if (!state.isLoading && loadMoreSignal.shouldLoad && state.canLoadMore && !state.isLoadingMore && !state.isRefreshing) {
             onLoadNextPage()
         }
     }
