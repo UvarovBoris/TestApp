@@ -29,8 +29,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:cats"))
     implementation(project(":core:data"))
+    implementation(project(":core:domain"))
     implementation(project(":core:ui"))
 
     implementation(platform(libs.androidx.compose.bom))
