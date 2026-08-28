@@ -53,6 +53,7 @@ android {
 
 dependencies {
     implementation(project(":feature:cats"))
+    implementation(project(":feature:catdetail"))
     implementation(project(":core:data"))
     implementation(project(":core:ui"))
 

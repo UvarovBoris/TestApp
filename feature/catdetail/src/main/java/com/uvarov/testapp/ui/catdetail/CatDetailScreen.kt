@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.SubcomposeAsyncImage
 import com.uvarov.testapp.core.ui.theme.TestAppTheme
@@ -45,10 +46,13 @@ import com.uvarov.testapp.data.model.Cat
 
 @Composable
 fun CatDetailRoute(
+    catId: String,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CatDetailViewModel
 ) {
+    val viewModel: CatDetailViewModel = hiltViewModel<CatDetailViewModel, CatDetailViewModelFactory>(
+        creationCallback = { factory -> factory.create(catId) }
+    )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     CatDetailScreen(
         state = uiState,
