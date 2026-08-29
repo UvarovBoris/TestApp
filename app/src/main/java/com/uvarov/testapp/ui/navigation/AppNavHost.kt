@@ -8,7 +8,6 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.uvarov.testapp.ui.catdetail.CatDetailDestination
 import com.uvarov.testapp.ui.catdetail.CatDetailRoute
 import com.uvarov.testapp.ui.cats.CatsRoute
 import com.uvarov.testapp.ui.main.MainRoute
@@ -19,6 +18,9 @@ data object MainDestination : NavKey
 
 @Serializable
 data object CatsDestination : NavKey
+
+@Serializable
+data class CatDetailDestination(val catId: String) : NavKey
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {

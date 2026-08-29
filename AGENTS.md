@@ -51,6 +51,8 @@ Convention (Compose, unidirectional data flow):
 - `ui/<feature>/` — per-feature: `XxxScreen.kt`, `XxxViewModel.kt`, `XxxUiState.kt`
 - `di/` — DI setup if a DI framework is added
 
+Navigation: keep all navigation3 destinations (`NavKey` classes, e.g. `MainDestination`, `CatsDestination`, `CatDetailDestination`) in the app module (`app/.../ui/navigation/AppNavHost.kt`). Do NOT move destinations into feature modules — feature modules expose `XxxRoute(...)` composables and receive callbacks (e.g. `onCatClick`) instead of owning nav keys.
+
 ## Coding Conventions
 
 - Follow Kotlin official style (`kotlin.code.style=official`); 4-space indentation.
