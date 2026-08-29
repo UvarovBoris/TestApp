@@ -131,7 +131,6 @@ fun CatsScreenPreview() {
                 cats = listOf(
                     Cat(
                         id = "aph",
-                        name = "Whiskers",
                         imageUrl = "https://cdn2.thecatapi.com/images/aph.jpg",
                         breeds = listOf(
                             Breed(
@@ -144,7 +143,7 @@ fun CatsScreenPreview() {
                             )
                         )
                     ),
-                    Cat(id = "bmp", name = "Milo", imageUrl = "https://cdn2.thecatapi.com/images/bmp.jpg")
+                    Cat(id = "bmp", imageUrl = "https://cdn2.thecatapi.com/images/bmp.jpg")
                 )
             ),
             onRefresh = {},

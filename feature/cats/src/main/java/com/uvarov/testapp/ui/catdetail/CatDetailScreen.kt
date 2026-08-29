@@ -78,7 +78,7 @@ fun CatDetailScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text(text = state.cat?.name.orEmpty()) },
+                title = { Text(text = state.cat?.id.orEmpty()) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -138,7 +138,7 @@ fun CatDetailScreen(
                     val shape = RoundedCornerShape(12.dp)
                     SubcomposeAsyncImage(
                         model = cat.imageUrl,
-                        contentDescription = cat.name,
+                        contentDescription = cat.id,
                         modifier = Modifier
                             .fillMaxWidth()
                             .aspectRatio(1f)
@@ -252,7 +252,6 @@ fun CatDetailScreenPreview() {
             state = CatDetailUiState(
                 cat = Cat(
                     id = "aph",
-                    name = "Whiskers",
                     imageUrl = "https://cdn2.thecatapi.com/images/aph.jpg",
                     breeds = listOf(
                         Breed(

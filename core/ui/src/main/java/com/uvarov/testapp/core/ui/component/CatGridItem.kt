@@ -64,7 +64,7 @@ fun CatGridItem(
     ) {
         SubcomposeAsyncImage(
             model = cat.imageUrl,
-            contentDescription = cat.name,
+            contentDescription = cat.id,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
             loading = {

@@ -9,14 +9,12 @@ import com.uvarov.testapp.domain.model.Cat
 
 fun CatWithBreeds.toCat(): Cat = Cat(
     id = cat.id,
-    name = cat.name,
     imageUrl = cat.imageUrl,
     breeds = breeds.map { it.toModel() }
 )
 
 fun Cat.toEntity(): CatEntity = CatEntity(
     id = id,
-    name = name,
     imageUrl = imageUrl
 )
 

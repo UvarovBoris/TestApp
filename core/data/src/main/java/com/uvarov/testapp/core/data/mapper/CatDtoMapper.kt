@@ -7,7 +7,6 @@ import com.uvarov.testapp.core.network.dto.CatImageDto
 
 fun CatImageDto.toCat(): Cat = Cat(
     id = id,
-    name = id,
     imageUrl = url,
     breeds = breeds.orEmpty().map { it.toModel() }
 )
