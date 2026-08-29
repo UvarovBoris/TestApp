@@ -1,7 +1,9 @@
 package com.uvarov.testapp.core.data.di
 
 import com.uvarov.testapp.core.data.repository.CatRepositoryImpl
+import com.uvarov.testapp.core.data.repository.FavoritesRepositoryImpl
 import com.uvarov.testapp.domain.repository.CatRepository
+import com.uvarov.testapp.domain.repository.FavoritesRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,8 @@ abstract class DataModule {
     @Binds
     @Singleton
     abstract fun bindCatRepository(repository: CatRepositoryImpl): CatRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFavoritesRepository(repository: FavoritesRepositoryImpl): FavoritesRepository
 }

@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,8 +55,11 @@ fun CatDetailRoute(
         creationCallback = { factory -> factory.create(catId) }
     )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
     CatDetailScreen(
         state = uiState,
+        isFavorite = isFavorite,
+        onToggleFavorite = viewModel::toggleFavorite,
         onBack = onBack,
         modifier = modifier
     )
@@ -65,6 +69,8 @@ fun CatDetailRoute(
 @Composable
 fun CatDetailScreen(
     state: CatDetailUiState,
+    isFavorite: Boolean,
+    onToggleFavorite: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -78,6 +84,19 @@ fun CatDetailScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onToggleFavorite) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                            tint = if (isFavorite) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                            }
                         )
                     }
                 }
@@ -247,6 +266,8 @@ fun CatDetailScreenPreview() {
                     )
                 )
             ),
+            isFavorite = true,
+            onToggleFavorite = {},
             onBack = {}
         )
     }

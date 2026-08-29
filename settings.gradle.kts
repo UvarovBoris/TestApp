@@ -30,5 +30,6 @@ include(":core:domain")
 include(":core:network")
 include(":core:ui")
 include(":feature:cats")
+include(":feature:favorites")
 include(":feature:main")
  

@@ -23,6 +23,7 @@ import com.uvarov.testapp.core.ui.theme.TestAppTheme
 @Composable
 fun MainRoute(
     onOpenCats: () -> Unit,
+    onOpenCat: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel(),
 ) {
@@ -31,6 +32,7 @@ fun MainRoute(
         state = uiState,
         onTabSelected = viewModel::onTabSelected,
         onOpenCats = onOpenCats,
+        onOpenCat = onOpenCat,
         modifier = modifier
     )
 }
@@ -40,6 +42,7 @@ fun MainScreen(
     state: MainUiState,
     onTabSelected: (MainTab) -> Unit,
     onOpenCats: () -> Unit,
+    onOpenCat: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val saveableStateHolder = rememberSaveableStateHolder()
@@ -72,7 +75,7 @@ fun MainScreen(
             saveableStateHolder.SaveableStateProvider(key = state.selectedTab) {
                 when (state.selectedTab) {
                     MainTab.HOME -> HomeRoute(onOpenCats = onOpenCats)
-                    MainTab.FAVORITES -> FavoritesRoute()
+                    MainTab.FAVORITES -> FavoritesRoute(onCatClick = onOpenCat)
                     MainTab.PROFILE -> ProfileRoute()
                 }
             }
@@ -87,7 +90,8 @@ fun MainScreenPreview() {
         MainScreen(
             state = MainUiState(selectedTab = MainTab.HOME),
             onTabSelected = {},
-            onOpenCats = {}
+            onOpenCats = {},
+            onOpenCat = {}
         )
     }
 }

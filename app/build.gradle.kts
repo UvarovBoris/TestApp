@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation(project(":feature:cats"))
+    implementation(project(":feature:favorites"))
     implementation(project(":feature:main"))
     implementation(project(":core:data"))
     implementation(project(":core:domain"))

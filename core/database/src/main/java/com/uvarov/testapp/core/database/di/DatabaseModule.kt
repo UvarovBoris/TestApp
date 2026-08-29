@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.uvarov.testapp.core.database.CatDatabase
 import com.uvarov.testapp.core.database.dao.CatDao
+import com.uvarov.testapp.core.database.dao.FavoriteCatDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,4 +27,7 @@ object DatabaseModule {
 
     @Provides
     fun provideCatDao(database: CatDatabase): CatDao = database.catDao()
+
+    @Provides
+    fun provideFavoriteCatDao(database: CatDatabase): FavoriteCatDao = database.favoriteCatDao()
 }

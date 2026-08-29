@@ -38,6 +38,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 is MainDestination -> NavEntry(key) {
                     MainRoute(
                         onOpenCats = { backStack.add(CatsDestination) },
+                        onOpenCat = { catId -> backStack.add(CatDetailDestination(catId)) },
                         modifier = modifier
                     )
                 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.uvarov.testapp.feature.main"
+    namespace = "com.uvarov.testapp.feature.favorites"
     compileSdk {
         version = release(37) {
             minorApiLevel = 1
@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:domain"))
     implementation(project(":core:ui"))
-    implementation(project(":feature:favorites"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
