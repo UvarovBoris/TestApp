@@ -1,18 +1,17 @@
 package com.uvarov.testapp.di
 
-import com.uvarov.testapp.data.repository.CatRepositoryImpl
-import com.uvarov.testapp.domain.repository.CatRepository
-import dagger.Binds
+import com.uvarov.testapp.BuildConfig
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class AppModule {
+object AppModule {
 
-    @Binds
-    @Singleton
-    abstract fun bindCatRepository(repository: CatRepositoryImpl): CatRepository
+    @Provides
+    @Named("cat_api_key")
+    fun provideCatApiKey(): String = BuildConfig.CAT_API_KEY
 }

@@ -24,7 +24,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "TestApp"
 include(":app")
+include(":core:data")
+include(":core:database")
 include(":core:domain")
+include(":core:network")
 include(":core:ui")
 include(":feature:cats")
 include(":feature:main")
