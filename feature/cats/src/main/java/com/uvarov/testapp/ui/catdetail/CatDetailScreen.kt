@@ -55,10 +55,8 @@ fun CatDetailRoute(
         creationCallback = { factory -> factory.create(catId) }
     )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
     CatDetailScreen(
         state = uiState,
-        isFavorite = isFavorite,
         onToggleFavorite = viewModel::toggleFavorite,
         onBack = onBack,
         modifier = modifier
@@ -69,7 +67,6 @@ fun CatDetailRoute(
 @Composable
 fun CatDetailScreen(
     state: CatDetailUiState,
-    isFavorite: Boolean,
     onToggleFavorite: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -91,8 +88,8 @@ fun CatDetailScreen(
                     IconButton(onClick = onToggleFavorite) {
                         Icon(
                             imageVector = Icons.Default.Favorite,
-                            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
-                            tint = if (isFavorite) {
+                            contentDescription = if (state.isFavorite) "Remove from favorites" else "Add to favorites",
+                            tint = if (state.isFavorite) {
                                 MaterialTheme.colorScheme.primary
                             } else {
                                 MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
@@ -263,9 +260,9 @@ fun CatDetailScreenPreview() {
                             description = "The Abyssinian is a lithe, finely boned cat with a striking ticked coat."
                         )
                     )
-                )
+                ),
+                isFavorite = true
             ),
-            isFavorite = true,
             onToggleFavorite = {},
             onBack = {}
         )

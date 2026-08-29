@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 import com.uvarov.testapp.core.database.entity.CatWithBreeds
 import com.uvarov.testapp.core.database.entity.FavoriteCatEntity
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FavoriteCatDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun addFavorite(favorite: FavoriteCatEntity)
 
     @Query("DELETE FROM favorite_cats WHERE catId = :catId")

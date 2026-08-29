@@ -10,8 +10,8 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -22,20 +22,16 @@ class CatDetailViewModel @AssistedInject constructor(
     @Assisted private val catId: String,
 ) : ViewModel() {
 
-    val uiState: StateFlow<CatDetailUiState> = getCatById(catId)
-        .map { cat -> CatDetailUiState(cat = cat, isLoading = false) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = CatDetailUiState(isLoading = true)
-        )
-
-    val isFavorite: StateFlow<Boolean> = favoritesRepository.isFavorite(catId)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false
-        )
+    val uiState: StateFlow<CatDetailUiState> = combine(
+        getCatById(catId),
+        favoritesRepository.isFavorite(catId)
+    ) { cat, isFavorite ->
+        CatDetailUiState(cat = cat, isLoading = false, isFavorite = isFavorite)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = CatDetailUiState(isLoading = true)
+    )
 
     fun toggleFavorite() {
         viewModelScope.launch {
