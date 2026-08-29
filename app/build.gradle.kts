@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -7,13 +5,6 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
-
-val localProperties = Properties()
-val localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.inputStream().use { localProperties.load(it) }
-}
-val catApiKey: String = localProperties.getProperty("CAT_API_KEY") ?: ""
 
 android {
     namespace = "com.uvarov.testapp"
@@ -30,8 +21,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "CAT_API_KEY", "\"$catApiKey\"")
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -47,7 +36,6 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
 }
 
