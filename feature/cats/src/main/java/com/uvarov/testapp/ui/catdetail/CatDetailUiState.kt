@@ -1,6 +1,6 @@
 package com.uvarov.testapp.ui.catdetail
 
-import com.uvarov.testapp.data.model.Cat
+import com.uvarov.testapp.domain.model.Cat
 
 data class CatDetailUiState(
     val cat: Cat? = null,

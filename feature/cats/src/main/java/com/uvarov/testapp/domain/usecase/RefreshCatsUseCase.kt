@@ -1,6 +1,6 @@
 package com.uvarov.testapp.domain.usecase
 
-import com.uvarov.testapp.data.repository.CatRepository
+import com.uvarov.testapp.domain.repository.CatRepository
 import javax.inject.Inject
 
 class RefreshCatsUseCase @Inject constructor(

@@ -1,6 +1,6 @@
-package com.uvarov.testapp.data.repository
+package com.uvarov.testapp.domain.repository
 
-import com.uvarov.testapp.data.model.Cat
+import com.uvarov.testapp.domain.model.Cat
 import kotlinx.coroutines.flow.Flow
 
 interface CatRepository {

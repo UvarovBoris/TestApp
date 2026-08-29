@@ -2,8 +2,9 @@ package com.uvarov.testapp.data.repository
 
 import com.uvarov.testapp.data.local.CatLocalDataSource
 import com.uvarov.testapp.data.mapper.toCat
-import com.uvarov.testapp.data.model.Cat
 import com.uvarov.testapp.data.remote.CatRemoteDataSource
+import com.uvarov.testapp.domain.model.Cat
+import com.uvarov.testapp.domain.repository.CatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex

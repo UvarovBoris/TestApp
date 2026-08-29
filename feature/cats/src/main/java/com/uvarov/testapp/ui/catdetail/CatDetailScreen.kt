@@ -41,8 +41,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.SubcomposeAsyncImage
 import com.uvarov.testapp.core.ui.theme.TestAppTheme
-import com.uvarov.testapp.data.model.Breed
-import com.uvarov.testapp.data.model.Cat
+import com.uvarov.testapp.domain.model.Breed
+import com.uvarov.testapp.domain.model.Cat
 
 @Composable
 fun CatDetailRoute(

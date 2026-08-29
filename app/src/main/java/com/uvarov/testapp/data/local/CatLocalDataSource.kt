@@ -3,7 +3,7 @@ package com.uvarov.testapp.data.local
 import androidx.room.withTransaction
 import com.uvarov.testapp.data.mapper.toCrossRefs
 import com.uvarov.testapp.data.mapper.toEntity
-import com.uvarov.testapp.data.model.Cat
+import com.uvarov.testapp.domain.model.Cat
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package com.uvarov.testapp.ui.cats
 
-import com.uvarov.testapp.data.model.Cat
+import com.uvarov.testapp.domain.model.Cat
 
 data class CatsUiState(
     val cats: List<Cat> = emptyList(),

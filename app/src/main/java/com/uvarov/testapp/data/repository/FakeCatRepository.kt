@@ -1,7 +1,8 @@
 package com.uvarov.testapp.data.repository
 
-import com.uvarov.testapp.data.model.Breed
-import com.uvarov.testapp.data.model.Cat
+import com.uvarov.testapp.domain.model.Breed
+import com.uvarov.testapp.domain.model.Cat
+import com.uvarov.testapp.domain.repository.CatRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

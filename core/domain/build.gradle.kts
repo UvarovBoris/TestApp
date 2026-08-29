@@ -21,7 +21,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:data"))
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.javax.inject)
 }

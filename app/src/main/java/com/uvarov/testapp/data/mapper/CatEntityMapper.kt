@@ -4,8 +4,8 @@ import com.uvarov.testapp.data.local.BreedEntity
 import com.uvarov.testapp.data.local.CatBreedCrossRef
 import com.uvarov.testapp.data.local.CatEntity
 import com.uvarov.testapp.data.local.CatWithBreeds
-import com.uvarov.testapp.data.model.Breed
-import com.uvarov.testapp.data.model.Cat
+import com.uvarov.testapp.domain.model.Breed
+import com.uvarov.testapp.domain.model.Cat
 
 fun CatWithBreeds.toCat(): Cat = Cat(
     id = cat.id,
