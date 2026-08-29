@@ -27,11 +27,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
-import com.uvarov.testapp.domain.model.Cat
 
 @Composable
 fun CatGridItem(
-    cat: Cat,
+    imageUrl: String,
+    id: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -63,8 +63,8 @@ fun CatGridItem(
             )
     ) {
         SubcomposeAsyncImage(
-            model = cat.imageUrl,
-            contentDescription = cat.id,
+            model = imageUrl,
+            contentDescription = id,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
             loading = {
@@ -89,7 +89,7 @@ fun CatGridItem(
             }
         )
         Text(
-            text = cat.id,
+            text = id,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()

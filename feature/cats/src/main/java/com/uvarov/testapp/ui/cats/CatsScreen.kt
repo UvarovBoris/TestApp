@@ -101,7 +101,8 @@ fun CatsScreen(
             ) {
                 items(state.cats, key = { it.id }) { cat ->
                     CatGridItem(
-                        cat = cat,
+                        imageUrl = cat.imageUrl,
+                        id = cat.id,
                         onClick = { onCatClick(cat.id) }
                     )
                 }
